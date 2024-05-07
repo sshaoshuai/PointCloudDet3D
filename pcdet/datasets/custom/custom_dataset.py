@@ -110,9 +110,14 @@ class CustomDataset(DatasetTemplate):
 
         return data_dict
 
+
+    
+    
+
     def evaluation(self, det_annos, class_names, **kwargs):
         if 'annos' not in self.custom_infos[0].keys():
             return 'No ground-truth boxes for evaluation', {}
+
 
         def kitti_eval(eval_det_annos, eval_gt_annos, map_name_to_kitti):
             from ..kitti.kitti_object_eval_python import eval as kitti_eval
@@ -129,11 +134,21 @@ class CustomDataset(DatasetTemplate):
             )
             return ap_result_str, ap_dict
 
+        def custom_eval(eval_det_annos, eval_gt_annos):
+            from .custom_obj_eval import eval as custom_eval
+
+            ap_result_str, ap_dict = custom_eval.get_official_eval_result(gt_annos=eval_gt_annos, dt_annos=eval_det_annos)
+
+            return ap_result_str, ap_dict
+
         eval_det_annos = copy.deepcopy(det_annos)
         eval_gt_annos = [copy.deepcopy(info['annos']) for info in self.custom_infos]
 
         if kwargs['eval_metric'] == 'kitti':
             ap_result_str, ap_dict = kitti_eval(eval_det_annos, eval_gt_annos, self.map_class_to_kitti)
+        elif kwargs['eval_metric'] == 'custom':
+            ap_result_str, ap_dict = custom_eval(eval_det_annos, eval_gt_annos)
+
         else:
             raise NotImplementedError
 
@@ -151,9 +166,16 @@ class CustomDataset(DatasetTemplate):
             if has_label:
                 annotations = {}
                 gt_boxes_lidar, name = self.get_label(sample_idx)
+#                if gt_boxes_lidar != []:
                 annotations['name'] = name
-                annotations['gt_boxes_lidar'] = gt_boxes_lidar[:, :7]
+                print(gt_boxes_lidar)
+                if gt_boxes_lidar == []:
+                    gt_boxes_lidar = [[]]
+                annotations['gt_boxes_lidar'] = gt_boxes_lidar[:, :7] 
                 info['annos'] = annotations
+#                else:
+#                    info['annos'] = {'name':[], 'gt_boxes_lidar':np.array(shape=[[7]])}
+
 
             return info
 
@@ -277,7 +299,7 @@ if __name__ == '__main__':
         ROOT_DIR = (Path(__file__).resolve().parent / '../../../').resolve()
         create_custom_infos(
             dataset_cfg=dataset_cfg,
-            class_names=['Vehicle', 'Pedestrian', 'Cyclist'],
+            class_names=['human'],
             data_path=ROOT_DIR / 'data' / 'custom',
             save_path=ROOT_DIR / 'data' / 'custom',
         )

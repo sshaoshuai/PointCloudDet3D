@@ -1,0 +1,40 @@
+
+# Create Dataset
+cd /app/OpenPCDet && \
+python3 -m pcdet.datasets.custom.custom_dataset create_custom_infos tools/cfgs/dataset_configs/custom_dataset.yaml
+
+# Train Model 
+cd /app/OpenPCDet/tools && \ 
+python3 train.py --cfg_file cfgs/custom_models/model_config.yaml --epoch 50 
+
+-> output is in /app/OpenPCDet/output/custom_models/... 
+
+
+# ssh connection for visualisation
+docker inspect \
+-f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' openpcdet 
+
+/etc/init.d/ssh restart
+
+ssh -X -p 8081 root@172.X.X.X
+
+
+# Tensorboard
+pip install tensorboard && \
+tensorboard --logdir /app/OpenPCDet/output/custom_models --bind_all
+-> localhost:6006
+
+# Test | this only shows prediction boxes 
+python3 demo.py --data_path ../data/custom/points --ext .npy --ckpt ../output/custom_models/pv_rcnn/default/ckpt/checkpoint_epoch_9.pth --cfg_file cfgs/custom_models/pv_rcnn.yaml
+
+# Test | this shows prediction boxes (green) and ground truth (blue) 
+python3 demo-gt.py --data_path ../data/custom/points --ext .npy --ckpt ../output/custom_models/pv_rcnn/default/ckpt/checkpoint_epoch_9.pth --cfg_file cfgs/custom_models/pv_rcnn.yaml
+
+
+# More Testing
+python3 test.py --cfg_file cfgs/custom_models/pointpillar.yaml --ckpt ../output/custom_models/pointpillar/default/ckpt/checkpoint_epoch_50.pth
+
+# Fails 
+
+### quaternion_to_rotation_matrix
+pip install kornia==0.5.8

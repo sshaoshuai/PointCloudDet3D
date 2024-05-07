@@ -1,12 +1,10 @@
 DATASET: 'CustomDataset'
-DATA_PATH: '../data/custom'
+DATA_PATH: '/app/OpenPCDet/data/custom'
 
-POINT_CLOUD_RANGE: [-75.2, -75.2, -2, 75.2, 75.2, 4]
+POINT_CLOUD_RANGE: [0, 0, 0, 60, 160, 60]
 
 MAP_CLASS_TO_KITTI: {
-    'Vehicle': 'Car',
-    'Pedestrian': 'Pedestrian',
-    'Cyclist': 'Cyclist',
+    'human': 'Pedestrian',
 }
 
 DATA_SPLIT: {
@@ -21,23 +19,25 @@ INFO_PATH: {
 
 POINT_FEATURE_ENCODING: {
     encoding_type: absolute_coordinates_encoding,
-    used_feature_list: ['x', 'y', 'z', 'intensity'],
-    src_feature_list: ['x', 'y', 'z', 'intensity'],
+    used_feature_list: ['x', 'y', 'z'],
+    src_feature_list: ['x', 'y', 'z'],
 }
 
 DATA_AUGMENTOR:
     DISABLE_AUG_LIST: ['placeholder']
+    KEEP_RAW_DATA: True
+    EXTEND_FACTOR: 3
     AUG_CONFIG_LIST:
         - NAME: gt_sampling
           USE_ROAD_PLANE: False
           DB_INFO_PATH:
               - custom_dbinfos_train.pkl
           PREPARE: {
-             filter_by_min_points: ['Vehicle:5', 'Pedestrian:5', 'Cyclist:5'],
+             filter_by_min_points: ['human:5'],
           }
 
-          SAMPLE_GROUPS: ['Vehicle:20', 'Pedestrian:15', 'Cyclist:15']
-          NUM_POINT_FEATURES: 4
+          SAMPLE_GROUPS: ['human:2']
+          NUM_POINT_FEATURES: 3
           DATABASE_WITH_FAKELIDAR: False
           REMOVE_EXTRA_WIDTH: [0.0, 0.0, 0.0]
           LIMIT_WHOLE_SCENE: True
@@ -62,7 +62,7 @@ DATA_PROCESSOR:
       }
 
     - NAME: transform_points_to_voxels
-      VOXEL_SIZE: [0.1, 0.1, 0.15]
+      VOXEL_SIZE: [1.875, 5, 1.5]
       MAX_POINTS_PER_VOXEL: 5
       MAX_NUMBER_OF_VOXELS: {
         'train': 150000,
