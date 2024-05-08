@@ -57,7 +57,13 @@ def parse_config():
 
 def eval_single_ckpt(model, test_loader, args, eval_output_dir, logger, epoch_id, dist_test=False):
     # load checkpoint
-    model.load_params_from_file(filename=args.ckpt, logger=logger, to_cpu=dist_test, 
+    if args.ckpt is None:
+        openpcdet_path = "/app/OpenPCDet/"
+        ckpt_file = openpcdet_path + args.ckpt_dir + os.listdir(openpcdet_path + args.ckpt_dir)[-1]
+
+    else:
+        ckpt_file = args.ckpt
+    model.load_params_from_file(filename=ckpt_file, logger=logger, to_cpu=dist_test, 
                                 pre_trained_path=args.pretrained_model)
     model.cuda()
     

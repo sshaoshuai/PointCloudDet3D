@@ -68,12 +68,17 @@ class DemoDataset(DatasetTemplate):
         # For example, if it's stored in a corresponding file:
         gt_file_path = self.sample_file_list[index].replace('points', 'labels').replace(self.ext, '.txt')  # Assuming .gt as ground truth extension
         print(gt_file_path)
+        
         gt_data = np.loadtxt(gt_file_path, dtype={'names': ('x', 'y', 'z', 'dx', 'dy', 'dz', 'yaw', 'label'), 'formats': ('f4', 'f4', 'f4', 'f4', 'f4', 'f4', 'f4', 'U10')})
-        if not isinstance(gt_data, np.ndarray):
-            print("generating array")
-            gt_data = np.array(gt_data)
+        print(f"Checking shape 1{gt_data.shape}")
+
+        if gt_data.shape != (2,):
+            gt_boxes = np.array([gt_data['x'],gt_data['y'],gt_data['z'],gt_data['dx'],gt_data['dy'],gt_data['dz'],gt_data['yaw']])
+            print("Not the right shape")
+            return gt_boxes
+        print(f"Checking shape 2{gt_data.shape}")
         print(gt_data)
-        print(len(gt_data))
+        #print(len(gt_data))
 #        if len(gt_data[idx]) > 1:
         gt_boxes = np.array([[gt['x'],gt['y'],gt['z'],gt['dx'],gt['dy'],gt['dz'],gt['yaw']] for gt in gt_data])
 #        else:
@@ -122,6 +127,7 @@ def main():
 
             # Visualizing both ground truth and predictions
             if OPEN3D_FLAG:
+                print(pred_dicts[0]['pred_scores'])
                 V.draw_scenes(
                 points=data_dict['points'][:, 1:], ref_boxes=pred_dicts[0]['pred_boxes'],
                 ref_scores=pred_dicts[0]['pred_scores'], ref_labels=pred_dicts[0]['pred_labels'], 
@@ -139,7 +145,7 @@ def main():
                 #    point_colors=(1, 0, 0)
 #                )
             else:
-                print("SECOND TEST\n\n\n")
+                print("SECOND CASE\n\n\n")
                 mlab.points3d(data_dict['points'][:, 0], data_dict['points'][:, 1], data_dict['points'][:, 2], mode='point')
                 V.draw_gt_boxes3d(data_dict['gt_boxes'], color=(1, 0, 0))  # Assuming red for GT
                 V.draw_gt_boxes3d(pred_dicts[0]['pred_boxes'], color=(0, 1, 0))  # Assuming green for predictions

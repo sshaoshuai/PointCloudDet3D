@@ -1,19 +1,102 @@
 {
     "configurations": [
         {
-            "name": "Docker: Python - General",
-            "type": "docker",
+            "name": "Python: Current File",
+            "type": "python",
             "request": "launch",
-            "preLaunchTask": "docker-run: debug",
-            "python": {
-                "pathMappings": [
-                    {
-                        "localRoot": "${workspaceFolder}",
-                        "remoteRoot": "/app"
-                    }
-                ],
-                "projectType": "general"
-            }
-        }
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Train Second",
+            "type": "python",
+            "request": "launch",
+            "program": "tools/train.py"  ,
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "/app/OpenPCDet",
+            "args": ["--cfg_file","tools/cfgs/custom_models/second.yaml"]
+        },
+        {
+            "name": "Test Second",
+            "type": "python",
+            "request": "launch",
+            "program": "tools/test.py"  ,
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "/app/OpenPCDet",
+            "args": ["--cfg_file","tools/cfgs/custom_models/second.yaml", "--ckpt_dir", "output/cfgs/custom_models/second/default/ckpt/"]
+        },
+        {
+            "name": "Train PointPillar",
+            "type": "python",
+            "request": "launch",
+            "program": "tools/train.py"  ,
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "/app/OpenPCDet",
+            "args": ["--cfg_file","tools/cfgs/custom_models/pointpillar.yaml"]
+        },
+        {
+            "name": "Test PointPillar",
+            "type": "python",
+            "request": "launch",
+            "program": "tools/test.py"  ,
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "/app/OpenPCDet",
+            "args": ["--cfg_file","tools/cfgs/custom_models/pointpillar.yaml", "--ckpt_dir", "output/custom_models/pointpillar/default/ckpt/"]
+        },
+        {
+            "name": "Train PV-RCNN",
+            "type": "python",
+            "request": "launch",
+            "program": "tools/train.py"  ,
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "/app/OpenPCDet",
+            "args": ["--cfg_file","tools/cfgs/custom_models/pv_rcnn.yaml"]
+        },
+        {
+            "name": "DEMO-GT",
+            "type": "python",
+            "request": "launch",
+            "program": "demo-gt.py"  ,
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "/app/OpenPCDet/tools",
+            "args": ["--data_path", "../data/custom/points", "--ext", ".npy", "--ckpt", "../output/cfgs/custom_models/pointpillar/default/ckpt/checkpoint_epoch_50.pth", "--cfg_file", "cfgs/custom_models/pointpillar.yaml"]
+        },
+        // {
+        //     "name": "Docker: Python - General",
+        //     "type": "docker",
+        //     "request": "launch",
+        //     "preLaunchTask": "docker-run: debug",
+        //     "python": {
+        //         "pathMappings": [
+        //             {
+        //                 "localRoot": "${workspaceFolder}",
+        //                 "remoteRoot": "/app"
+        //             }
+        //         ],
+        //         "projectType": "general"
+        //     }
+        // },
+        // {
+        //     "name": "Docker: Python - DebugTrain",
+        //     "type": "debugpy",
+        //     "request": "launch",
+            
+        //     "python": {
+        //         "pathMappings": [
+        //             {
+        //                 "localRoot": "${workspaceFolder}",
+        //                 "remoteRoot": "/app"
+        //             }
+        //         ],
+        //         "projectType": "general"
+        //     }
+        // }
     ]
 }

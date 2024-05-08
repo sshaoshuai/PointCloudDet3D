@@ -2,25 +2,47 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"type": "docker-build",
-			"label": "docker-build",
-			"platform": "python",
-			"dockerBuild": {
-				"tag": "openpcdet:latest",
-				"dockerfile": "${workspaceFolder}/Dockerfile",
-				"context": "${workspaceFolder}",
-				"pull": true
-			}
-		},
-		{
-			"type": "docker-run",
-			"label": "docker-run: debug",
-			"dependsOn": [
-				"docker-build"
-			],
-			"python": {
-				"file": "tools/test.py"
-			}
-		}
+            "label": "Run File",
+            "command": "python ${file}",
+            "type": "shell",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "new",
+                "focus": true
+            }
+        },
+		// {
+		// 	"type": "docker-build",
+		// 	"label": "docker-build",
+		// 	"platform": "python",
+		// 	"dockerBuild": {
+		// 		"tag": "openpcdet:latest",
+		// 		"dockerfile": "${workspaceFolder}/Dockerfile",
+		// 		"context": "${workspaceFolder}",
+		// 		"pull": true
+		// 	}
+		// },
+		// {
+		// 	"type": "debuggy",
+		// 	"label": "docker-run: debug",
+		// 	"dependsOn": [
+		// 		"docker-build"
+		// 	],
+		// 	"python": {
+		// 		"file": "tools/test.py"
+		// 	}
+		// },
+		// {
+		// 	"label": "Run current",
+		// 	"type": "shell",
+		// 	"python": {
+		// 		"file": "tools/train.py"
+		// 	},
+		// 	"command": "python3 train.py --cfg_file /app/OpenPCDet/tools/cfgs/custom_models/"
+		//   }
 	]
 }
