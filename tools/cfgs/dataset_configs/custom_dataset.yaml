@@ -4,7 +4,7 @@ DATA_PATH: '/app/OpenPCDet/data/custom'
 POINT_CLOUD_RANGE: [0, 0, 0, 60, 160, 60]
 
 MAP_CLASS_TO_KITTI: {
-    'human': 'Cyclist',
+    'human': 'Pedestrian',
 }
 
 DATA_SPLIT: {

@@ -29,7 +29,7 @@ def get_thresholds(scores: np.ndarray, num_gt, num_sample_pts=41):
 
 def clean_data(gt_anno, dt_anno, current_class, difficulty):
     CLASS_NAMES = ['car', 'pedestrian', 'cyclist', 'van', 'person_sitting', 'truck']
-    MIN_HEIGHT = [40, 25, 25]
+    MIN_HEIGHT = [0, 0, 0]
     MAX_OCCLUSION = [0, 1, 2]
     MAX_TRUNCATION = [0.15, 0.3, 0.5]
     dc_bboxes, ignored_gt, ignored_dt = [], [], []
@@ -42,6 +42,8 @@ def clean_data(gt_anno, dt_anno, current_class, difficulty):
         gt_name = gt_anno["name"][i].lower()
         height = bbox[3] - bbox[1]
         valid_class = -1
+        if gt_name == 'pedes':
+            gt_name = 'pedestrian'
         if (gt_name == current_cls_name):
             valid_class = 1
         elif (current_cls_name == "Pedestrian".lower()
@@ -68,7 +70,12 @@ def clean_data(gt_anno, dt_anno, current_class, difficulty):
         if gt_anno["name"][i] == "DontCare":
             dc_bboxes.append(gt_anno["bbox"][i])
     for i in range(num_dt):
-        if (dt_anno["name"][i].lower() == current_cls_name):
+        if dt_anno["name"][i].lower() == 'pedes':
+            dt_name = 'pedestrian'
+        else:
+            dt_name = dt_anno["name"][i].lower()
+
+        if (dt_name == current_cls_name):
             valid_class = 1
         else:
             valid_class = -1
@@ -78,6 +85,7 @@ def clean_data(gt_anno, dt_anno, current_class, difficulty):
         elif valid_class == 1:
             ignored_dt.append(0)
         else:
+
             ignored_dt.append(-1)
 
     return num_valid_gt, ignored_gt, ignored_dt, dc_bboxes

@@ -46,7 +46,7 @@
             "console": "integratedTerminal",
             "justMyCode": true,
             "cwd": "/app/OpenPCDet",
-            "args": ["--cfg_file","tools/cfgs/custom_models/pointpillar.yaml", "--ckpt_dir", "output/custom_models/pointpillar/default/ckpt/"]
+            "args": ["--cfg_file","tools/cfgs/custom_models/pointpillar.yaml", "--ckpt_dir", "output/cfgs/custom_models/pointpillar/default/ckpt/"]
         },
         {
             "name": "Train PV-RCNN",
@@ -59,6 +59,16 @@
             "args": ["--cfg_file","tools/cfgs/custom_models/pv_rcnn.yaml"]
         },
         {
+            "name": "Test PV-RCNN",
+            "type": "python",
+            "request": "launch",
+            "program": "tools/test.py"  ,
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "/app/OpenPCDet",
+            "args": ["--cfg_file","tools/cfgs/custom_models/pv_rcnn.yaml", "--ckpt", "output/cfgs/custom_models/pv_rcnn/default/ckpt/checkpoint_epoch_10.pth"]
+        },
+        {
             "name": "DEMO-GT",
             "type": "python",
             "request": "launch",
@@ -66,7 +76,7 @@
             "console": "integratedTerminal",
             "justMyCode": true,
             "cwd": "/app/OpenPCDet/tools",
-            "args": ["--data_path", "../data/custom/points", "--ext", ".npy", "--ckpt", "../output/cfgs/custom_models/pointpillar/default/ckpt/checkpoint_epoch_50.pth", "--cfg_file", "cfgs/custom_models/pointpillar.yaml"]
+            "args": ["--data_path", "../data/custom/points", "--ext", ".npy", "--ckpt", "../output/cfgs/custom_models/pv_rcnn/default/ckpt/checkpoint_epoch_80.pth", "--cfg_file", "cfgs/custom_models/pv_rcnn.yaml"]
         },
         // {
         //     "name": "Docker: Python - General",
