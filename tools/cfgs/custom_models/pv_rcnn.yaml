@@ -36,7 +36,7 @@ MODEL:
 
         ANCHOR_GENERATOR_CONFIG: [
             {
-                'class_name': 'pedestrian',
+                'class_name': 'human',
                 'anchor_sizes': [[20.33, 14.2, 16.9]],
                 'anchor_rotations': [0, 1.57],
                 'anchor_bottom_heights': [0],

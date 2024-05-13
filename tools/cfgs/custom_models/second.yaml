@@ -12,7 +12,7 @@ DATA_CONFIG:
             'test': False
           }
         - NAME: transform_points_to_voxels
-          VOXEL_SIZE: [1.875, 5, 60]
+          VOXEL_SIZE: [1.875, 5, 1.5]
           MAX_POINTS_PER_VOXEL: 32
           MAX_NUMBER_OF_VOXELS: {
             'train': 16000,
@@ -85,8 +85,8 @@ MODEL:
                 'anchor_bottom_heights': [0],
                 'align_center': False,
                 'feature_map_stride': 8,
-                'matched_threshold': 0.5,
-                'unmatched_threshold': 0.35
+                'matched_threshold': 0.7,
+                'unmatched_threshold': 0.5
             },
          ]
 

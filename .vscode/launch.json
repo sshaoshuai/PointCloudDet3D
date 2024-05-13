@@ -76,7 +76,7 @@
             "console": "integratedTerminal",
             "justMyCode": true,
             "cwd": "/app/OpenPCDet/tools",
-            "args": ["--data_path", "../data/custom/points", "--ext", ".npy", "--ckpt", "../output/cfgs/custom_models/pv_rcnn/default/ckpt/checkpoint_epoch_80.pth", "--cfg_file", "cfgs/custom_models/pv_rcnn.yaml"]
+            "args": ["--data_path", "../data/custom/points", "--ext", ".npy", "--ckpt", "../output/cfgs/custom_models/second/default/ckpt/checkpoint_epoch_10.pth", "--cfg_file", "cfgs/custom_models/second.yaml"]
         },
         // {
         //     "name": "Docker: Python - General",
