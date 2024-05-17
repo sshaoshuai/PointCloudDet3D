@@ -10,7 +10,7 @@ python3 train.py --cfg_file cfgs/custom_models/model_config.yaml --epoch 50
 -> output is in /app/OpenPCDet/output/custom_models/... 
 
 # Training If you wanna be the very best... like no one ever was 
-python3 train.py --cfg_file cfgs/custom_models/second.yaml && python3 train.py --cfg_file cfgs/custom_models/pointpillar.yaml && python3 train.py --cfg_file cfgs/custom_models/pv_rcnn.yaml
+python3 train.py --cfg_file cfgs/custom_models/second.yaml && python3 train.py --cfg_file cfgs/custom_models/pointpillar.yaml && python3 train.py --cfg_file cfgs/custom_models/pv_rcnn.yaml >> overnight_log.txt
 
 
 # ssh connection for visualisation

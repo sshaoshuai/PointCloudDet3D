@@ -85,8 +85,8 @@ MODEL:
                 'anchor_bottom_heights': [0],
                 'align_center': False,
                 'feature_map_stride': 8,
-                'matched_threshold': 0.7,
-                'unmatched_threshold': 0.5
+                'matched_threshold': 0.5,
+                'unmatched_threshold': 0.35
             },
          ]
 
@@ -107,7 +107,7 @@ MODEL:
             }
 
     POST_PROCESSING:
-        RECALL_THRESH_LIST: [0.05, 0.15, 0.5]
+        RECALL_THRESH_LIST: [0.3, 0.5, 0.7]
         SCORE_THRESH: 0.1
         OUTPUT_RAW_SCORE: False
 
@@ -116,14 +116,14 @@ MODEL:
         NMS_CONFIG:
             MULTI_CLASSES_NMS: False
             NMS_TYPE: nms_gpu
-            NMS_THRESH: 0.4
+            NMS_THRESH: 0.3 
             NMS_PRE_MAXSIZE: 4096
             NMS_POST_MAXSIZE: 500
 
 
 OPTIMIZATION:
     BATCH_SIZE_PER_GPU: 4
-    NUM_EPOCHS: 100
+    NUM_EPOCHS: 25
 
     OPTIMIZER: adam_onecycle
     LR: 0.003

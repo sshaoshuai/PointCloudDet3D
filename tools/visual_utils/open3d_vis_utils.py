@@ -73,6 +73,45 @@ def draw_scenes(points, gt_boxes=None, ref_boxes=None, ref_labels=None, ref_scor
     vis.run()
     vis.destroy_window()
 
+def draw_scenes_with_score(points, gt_boxes=None, ref_boxes=None, ref_labels=None, ref_scores=None, point_colors=None, draw_origin=True, thresh=0.0):
+    if isinstance(points, torch.Tensor):
+        points = points.cpu().numpy()
+    if isinstance(gt_boxes, torch.Tensor):
+        gt_boxes = gt_boxes.cpu().numpy()
+    if isinstance(ref_boxes, torch.Tensor):
+        ref_boxes = ref_boxes.cpu().numpy()
+
+    vis = open3d.visualization.Visualizer()
+    vis.create_window()
+
+    vis.get_render_option().point_size = 1.0
+    vis.get_render_option().background_color = np.zeros(3)
+
+    # draw origin
+    if draw_origin:
+        axis_pcd = open3d.geometry.TriangleMesh.create_coordinate_frame(size=1.0, origin=[0, 0, 0])
+        vis.add_geometry(axis_pcd)
+
+    pts = open3d.geometry.PointCloud()
+    pts.points = open3d.utility.Vector3dVector(points[:, :3])
+
+    vis.add_geometry(pts)
+    if point_colors is None:
+        pts.colors = open3d.utility.Vector3dVector(np.ones((points.shape[0], 3)))
+    else:
+        pts.colors = open3d.utility.Vector3dVector(point_colors)
+
+    if gt_boxes is not None:
+        vis = draw_box(vis, gt_boxes, (0, 0, 1))
+
+    if ref_boxes is not None:
+        #ref_boxes = [box for box in ref_boxes if box.]
+        vis = draw_box_with_score(vis, ref_boxes, (0, 1, 0), ref_labels, ref_scores, thresh)
+
+    vis.run()
+    vis.destroy_window()
+
+
 
 def translate_boxes_to_open3d_instance(gt_boxes):
     """
@@ -103,8 +142,24 @@ def translate_boxes_to_open3d_instance(gt_boxes):
 
 def draw_box(vis, gt_boxes, color=(0, 1, 0), ref_labels=None, score=None):
     for i in range(gt_boxes.shape[0]):
+
+        line_set, box3d = translate_boxes_to_open3d_instance(gt_boxes[i])
+        if ref_labels is None:
+            line_set.paint_uniform_color(color)
+        else:
+            line_set.paint_uniform_color(box_colormap[ref_labels[i]])
+
+        vis.add_geometry(line_set)
+
+        #if score is not None:
+        #    corners = box3d.get_box_points()
+        #    vis.add_3d_label(corners[5], '%.2f' % score[i])
+    return vis
+
+def draw_box_with_score(vis, gt_boxes, color=(0, 1, 0), ref_labels=None, score=None, thresh = 0.0):
+    for i in range(gt_boxes.shape[0]):
         if score is not None:
-            if score[i].cpu().numpy() < 0:
+            if score[i].cpu().numpy() < thresh:
                 continue
 
         line_set, box3d = translate_boxes_to_open3d_instance(gt_boxes[i])
