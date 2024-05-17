@@ -81,7 +81,7 @@ def draw_scenes_with_score(points, gt_boxes=None, ref_boxes=None, ref_labels=Non
     if isinstance(ref_boxes, torch.Tensor):
         ref_boxes = ref_boxes.cpu().numpy()
 
-    vis = open3d.visualization.Visualizer()
+    vis = open3d.visualization.O3DVisualizer()
     vis.create_window()
 
     vis.get_render_option().point_size = 1.0
@@ -151,9 +151,14 @@ def draw_box(vis, gt_boxes, color=(0, 1, 0), ref_labels=None, score=None):
 
         vis.add_geometry(line_set)
 
-        #if score is not None:
-        #    corners = box3d.get_box_points()
-        #    vis.add_3d_label(corners[5], '%.2f' % score[i])
+        # if score is not None:
+        #     corners = box3d.get_box_points()
+        #     #label = open3d.visualization.gui.Label3D(, )
+        #     #corner_point_formatted = np.array(corners[5], dtype=np.float32).reshape(3, 0)
+        #     open3d.cpu.pybind.visualization.O3DVisualizer.add_3d_label(corners, f'{score[i]:.2f}') 
+
+
+        #     #vis.add_3d_label(corners[5], '%.2f' % score[i])
     return vis
 
 def draw_box_with_score(vis, gt_boxes, color=(0, 1, 0), ref_labels=None, score=None, thresh = 0.0):

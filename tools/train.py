@@ -45,7 +45,7 @@ def parse_config():
     parser.add_argument('--save_to_file', action='store_true', default=False, help='')
     
     parser.add_argument('--use_tqdm_to_record', action='store_true', default=False, help='if True, the intermediate losses will not be logged to file, only tqdm will be used')
-    parser.add_argument('--logger_iter_interval', type=int, default=50, help='')
+    parser.add_argument('--logger_iter_interval', type=int, default=10, help='')
     parser.add_argument('--ckpt_save_time_interval', type=int, default=300, help='in terms of seconds')
     parser.add_argument('--wo_gpu_stat', action='store_true', help='')
     parser.add_argument('--use_amp', action='store_true', help='use mix precision training')

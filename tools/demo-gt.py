@@ -117,6 +117,9 @@ def main():
     model.eval()
     if len(demo_dataset) > 10:
         start_idx = int(input("Please enter index to start\n"))
+        if start_idx > len(demo_dataset):
+            print("Error start_idx to big for dataset")
+            return
         demo_dataset.sample_file_list = demo_dataset.sample_file_list[start_idx:]
     with torch.no_grad():
         for idx, data_dict in enumerate(demo_dataset):

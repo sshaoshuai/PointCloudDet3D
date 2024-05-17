@@ -70,14 +70,44 @@
             "args": ["--cfg_file","tools/cfgs/custom_models/pv_rcnn-aug.yaml", "--ckpt", "output/cfgs/custom_models/pv_rcnn/default/ckpt/checkpoint_epoch_10.pth"]
         },
         {
-            "name": "DEMO-GT PointPillar",
+            "name": "Train CenterPoint",
+            "type": "python",
+            "request": "launch",
+            "program": "train.py"  ,
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "/app/OpenPCDet/tools/",
+            "args": ["--cfg_file","cfgs/custom_models/centerpoint.yaml"]
+        },
+        {
+            "name": "Test CenterPoint",
+            "type": "python",
+            "request": "launch",
+            "program": "tools/test.py"  ,
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "/app/OpenPCDet",
+            "args": ["--cfg_file","tools/cfgs/custom_models/centerpoint.yaml", "--ckpt", "output/cfgs/custom_models/centerpoint/default/ckpt/checkpoint_epoch_10.pth"]
+        },
+        {
+            "name": "DEMO-GT CenterPoint",
             "type": "python",
             "request": "launch",
             "program": "demo-gt.py"  ,
             "console": "integratedTerminal",
             "justMyCode": true,
             "cwd": "/app/OpenPCDet/tools",
-            "args": ["--data_path", "../data/custom/points", "--ext", ".npy", "--ckpt", "../output/custom_models/pointpillar/default/ckpt/checkpoint_epoch_149.pth", "--cfg_file", "cfgs/custom_models/pointpillar.yaml"]
+            "args": ["--data_path", "../data/custom/points", "--ext", ".npy", "--ckpt", "../output/custom_models/centerpoint/default/ckpt/checkpoint_epoch_80.pth", "--cfg_file", "cfgs/custom_models/centerpoint.yaml"]
+        },
+        {
+            "name": "DEMO-GT Pointpillar",
+            "type": "python",
+            "request": "launch",
+            "program": "demo-gt.py"  ,
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "/app/OpenPCDet/tools",
+            "args": ["--data_path", "../data/custom/points", "--ext", ".npy", "--ckpt", "../output/custom_models/pointpillar/default/ckpt/checkpoint_epoch_99.pth", "--cfg_file", "cfgs/custom_models/pointpillar.yaml"]
         },
         {
             "name": "DEMO-GT Second",
