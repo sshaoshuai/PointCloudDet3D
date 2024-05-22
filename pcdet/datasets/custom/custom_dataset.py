@@ -168,7 +168,7 @@ class CustomDataset(DatasetTemplate):
                 gt_boxes_lidar, name = self.get_label(sample_idx)
 #                if gt_boxes_lidar != []:
                 annotations['name'] = name
-                print(gt_boxes_lidar)
+                #print(gt_boxes_lidar)
                 if gt_boxes_lidar == []:
                     gt_boxes_lidar = [[]]
                 annotations['gt_boxes_lidar'] = gt_boxes_lidar[:, :7] 
