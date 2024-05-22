@@ -1,0 +1,5 @@
+Dataset: /home/zebsi/Documents/SCS/Project/Data/labeled-openpcdet-dataset-v9
+ This Dataset gets saved as float32 data to .npy files. No npy or label file if no Human inside 
+HUMAN_ONLY: True ADD_BB_WHEN_NO_HUMAN: False
+object: [12.094560155440059, 27.540440428317247, 9.862607759169133] Z-angle: 1.460716162642528
+human: [14.223698159407482, 20.336054661267152, 16.937960698756417] Z-angle: 1.6869946045409343
