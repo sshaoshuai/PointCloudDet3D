@@ -1,0 +1,31 @@
+---
+services:
+  openpcdet:
+    image: openpcdet-image:V1
+    container_name: openpcdet
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - SDL_VIDEODRIVER=x11
+      - DISPLAY=${DISPLAY}
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /home/redtiger/Documents/smueck_tmp/datasets/OpenPCDet/data:/storage
+      - /home/redtiger/Documents/smueck_tmp/datasets/OpenPCDet/weights:/weights
+      - /home/redtiger/Documents/smueck_tmp/OpenPCDet:/app/OpenPCDet
+    ports:
+      - "2222:22"
+      - "6006:6006"
+    privileged: true
+#    command: /usr/sbin/sshd
+    ipc: host
+    runtime: nvidia
+    shm_size: '2gb'
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]

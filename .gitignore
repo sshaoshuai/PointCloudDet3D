@@ -7,7 +7,6 @@
 venv/
 *.idea/
 *.so
-*.yaml
 *.sh
 *.pth
 *.pkl
