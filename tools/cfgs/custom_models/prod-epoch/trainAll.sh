@@ -3,10 +3,11 @@
 
 # Define the directory where the commands will be executed
 TARGET_DIRECTORY="/app/OpenPCDet/tools"
+CONFIG_DIR="/app/OpenPCDet/tools/cfgs/custom_models/prod/"
 
 # Change to the target directory
 cd "$TARGET_DIRECTORY"
-CONFIG_DIR = "/app/OpenPCDet/tools/cfgs/custom_models/prod/"
+
 # Array of configuration files
 CONFIG_FILES=(
     "pointpillar_10ep.yaml"
@@ -32,7 +33,7 @@ for CFG in "${CONFIG_FILES[@]}"
 do
     echo "Starting training with configuration: $CFG"
     # Execute the python training command with the current configuration file and capture the output
-    python3 train.py --cfg_file $CONFIG_DIR$CFG &> output.log
+    python3 train.py --cfg_file "${CONFIG_DIR}${CFG}" &> output.log
 
     # Check if the command was successful
     if [ $? -eq 0 ]; then
@@ -44,7 +45,7 @@ do
     fi
 
     # Capture the last 100 lines from the output and save it to a file
-    tail -n 100 output.log > "${CONFIG_DIR}${CFG%.*}_output.txt"
+    tail -n 100 output.log > "${CONFIG_DIR}/out/${CFG%.*}_output.txt"
 
     # Optional: Remove the full log if it's no longer needed
     # rm output.log

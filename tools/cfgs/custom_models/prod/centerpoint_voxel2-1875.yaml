@@ -2,6 +2,14 @@ CLASS_NAMES: ['human']
 
 DATA_CONFIG:
     _BASE_CONFIG_: cfgs/dataset_configs/custom_dataset.yaml
+    DATA_PROCESSOR:
+        - NAME: transform_points_to_voxels
+            VOXEL_SIZE: [2, 1.875, 60]
+            MAX_POINTS_PER_VOXEL: 32
+            MAX_NUMBER_OF_VOXELS: {
+                'train': 16000,
+                'test': 40000
+            }
 
 MODEL:
     NAME: CenterPoint
