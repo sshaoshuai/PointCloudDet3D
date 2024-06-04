@@ -50,7 +50,7 @@ do
     fi
 
     # Capture the last 100 lines from the output and save it to a file
-    tail -n 100 output.log > "${CONFIG_DIR}/out/${CFG%.*}_output.txt"
+    tail -n 100 output.log > "${CONFIG_DIR}out/${CFG%.*}_output.txt"
 
     # Optional: Remove the full log if it's no longer needed
     # rm output.log
