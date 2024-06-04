@@ -17,8 +17,8 @@ CONFIG_FILES=(
 
     "pv_rcnn_3grid.yaml"
     "pv_rcnn_6grid.yaml"
-    "pv_rcnn_8grid.yaml"
-    "pv_rcnn_12grid.yaml"
+#    "pv_rcnn_8grid.yaml"
+#    "pv_rcnn_12grid.yaml"
 
     "centerpoint_voxel2-1875.yaml"
     "centerpoint_voxel5-1875.yaml"
