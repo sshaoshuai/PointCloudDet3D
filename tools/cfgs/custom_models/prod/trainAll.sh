@@ -4,6 +4,7 @@
 # Define the directory where the commands will be executed
 TARGET_DIRECTORY="/app/OpenPCDet/tools"
 CONFIG_DIR="/app/OpenPCDet/tools/cfgs/custom_models/prod/"
+OUTPUT_DIR="/app/OpenPCDet/outputs$CONFIG_DIR"
 
 # Change to the target directory
 cd "$TARGET_DIRECTORY"
@@ -48,6 +49,21 @@ do
         # Optional: Exit on failure
         #exit 1
     fi
+
+    # Get size of latest checkpoint file
+    CHECKPOINT_FILE=$(ls -t "${OUTPUT_DIR}${CFG%.*}/default/ckpt" | head -1)
+    CHECKPOINT_SIZE=$(stat -c %s "${OUTPUT_DIR}/default/ckpt/${CHECKPOINT_FILE}")
+    echo "Size of latest Checkpoint $CHECKPOINT_FILE is $CHECKPOINT_SIZE" >> output.log
+
+    # Start Test and get Inference time
+    echo "Starting test with configuration: $CFG"
+    python3 test.py --cfg_file "${CONFIG_DIR}${CFG}" --ckpt "${CHECKPOINT_FILE}" &>> test-output.log
+
+    BACK_PID=$!
+    wait $BACK_PID
+
+    # get inference time "infer_time=5.6(114.0)"  from test-output.log
+    grep -oP 'infer_time=\K[0-9.]+\(.*\)' test-output.log >> output.log
 
     # Capture the last 100 lines from the output and save it to a file
     tail -n 100 output.log > "${CONFIG_DIR}out/${CFG%.*}_output.txt"
