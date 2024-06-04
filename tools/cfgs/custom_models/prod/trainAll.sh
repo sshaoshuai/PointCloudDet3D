@@ -55,7 +55,7 @@ do
     #echo "FILE $CHECKPOINT_FILE"
     CHECKPOINT_SIZE=$(stat -c %s "${OUTPUT_DIR}${CFG%.*}/default/ckpt/${CHECKPOINT_FILE}")
     #echo "SIZE $CHECKPOINT_SIZE"
-    echo "\nSize of latest Checkpoint $CHECKPOINT_FILE is $CHECKPOINT_SIZE\n\n" >> output.log
+    echo "Size of latest Checkpoint $CHECKPOINT_FILE is $CHECKPOINT_SIZE" >> output.log
 
     # Start Test and get Inference time
     echo "Starting test with configuration: $CFG"
@@ -65,7 +65,7 @@ do
     wait $BACK_PID
 
     # get inference time "infer_time=5.6(114.0)"  from test-output.log
-    (grep -oP 'infer_time=\K[0-9.]+\(.*\)' test-output.log | tail -n 2) >> output.log
+    grep -oP 'infer_time=\K[0-9.]+\(.*\)' test-output.log >> output.log
 
     # Capture the last 100 lines from the output and save it to a file
     tail -n 100 output.log > "${CONFIG_DIR}out/${CFG%.*}_output.txt"
