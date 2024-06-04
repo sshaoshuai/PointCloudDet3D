@@ -59,7 +59,7 @@ do
 
     # Start Test and get Inference time
     echo "Starting test with configuration: $CFG"
-    python3 test.py --cfg_file "${CONFIG_DIR}${CFG}" --ckpt "${CHECKPOINT_FILE}" &> test-output.log
+    python3 test.py --cfg_file "${CONFIG_DIR}${CFG}" --ckpt "${CONFIG_DIR}${CFG}${CHECKPOINT_FILE}" &> test-output.log
 
     BACK_PID=$!
     wait $BACK_PID
