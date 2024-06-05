@@ -67,6 +67,7 @@ ENV TORCH_CUDA_ARCH_LIST="3.5;5.0;6.0;6.1;7.0;7.5;8.0;8.6+PTX"
 RUN pip3 install numpy==1.23.0 llvmlite numba tensorboardX easydict pyyaml scikit-image tqdm SharedArray open3d mayavi av2 kornia pyquaternion
 RUN pip3 install spconv-cu116
 
+WORKDIR /app
 RUN git clone https://github.com/Zebsi235/OpenPCDet.git
 
 WORKDIR /app/OpenPCDet

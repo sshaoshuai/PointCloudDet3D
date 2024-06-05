@@ -32,6 +32,9 @@ pip install tensorboard && \
 tensorboard --logdir /app/OpenPCDet/output/custom_models --bind_all
 -> localhost:6006
 
+## foarward on kronos 
+ssh -N -L 6006:localhost:6006 smueck@10.60.0.135 -i ~/.ssh/id_ed25519_chronos
+
 # Test | this only shows prediction boxes 
 python3 demo.py --data_path ../data/custom/points --ext .npy --ckpt ../output/custom_models/pv_rcnn/default/ckpt/checkpoint_epoch_9.pth --cfg_file cfgs/custom_models/pv_rcnn.yaml
 

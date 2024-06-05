@@ -1,7 +1,7 @@
 CLASS_NAMES: ['human']
 
 DATA_CONFIG:
-    _BASE_CONFIG_: cfgs/dataset_configs/custom_dataset_voxel5-375.yaml
+    _BASE_CONFIG_: cfgs/dataset_configs/custom_dataset_voxel2-1875.yaml
 
 MODEL:
     NAME: CenterPoint
@@ -14,7 +14,7 @@ MODEL:
 
     MAP_TO_BEV:
         NAME: HeightCompression
-        NUM_BEV_FEATURES: 256
+        NUM_BEV_FEATURES: 128
 
     BACKBONE_2D:
         NAME: BaseBEVBackbone

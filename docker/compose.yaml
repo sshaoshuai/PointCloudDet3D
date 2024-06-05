@@ -11,13 +11,11 @@ services:
       - DISPLAY=${DISPLAY}
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
-      - /home/redtiger/Documents/smueck_tmp/datasets/OpenPCDet/data:/storage
-      - /home/redtiger/Documents/smueck_tmp/datasets/OpenPCDet/weights:/weights
-      - /home/redtiger/Documents/smueck_tmp/OpenPCDet:/app/OpenPCDet
+      - /home/smueck/data:/storage
+      - /home/smueck/OpenPCDet:/app/OpenPCDet
     ports:
       - "2222:22"
       - "6006:6006"
-    privileged: true
 #    command: /usr/sbin/sshd
     ipc: host
     runtime: nvidia

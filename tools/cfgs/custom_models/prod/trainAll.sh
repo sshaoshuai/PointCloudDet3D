@@ -11,24 +11,16 @@ cd "$TARGET_DIRECTORY"
 
 # Array of configuration files
 CONFIG_FILES=(
+    "centerpoint_voxel2-1875_bb2d.yaml"
+    
+    "pointpillar_20ppv_lr001.yaml"
     "pointpillar_20ppv.yaml"
-    "pointpillar_32ppv.yaml"
-    "pointpillar_40ppv.yaml"
-    "pointpillar_64ppv.yaml"
+    "pointpillar_32ppv_lr001.yaml"
 
-    "pv_rcnn_3grid.yaml"
-    "pv_rcnn_6grid.yaml"
-#    "pv_rcnn_8grid.yaml"
-#    "pv_rcnn_12grid.yaml"
+    "pv_rcnn_3grid_bb2d.yaml"
 
-    "centerpoint_voxel2-1875.yaml"
-    "centerpoint_voxel5-1875.yaml"
-    "centerpoint_voxel5-375.yaml"
-
-    "second_2lay.yaml"
-    "second_4lay.yaml"
-    "second_5layers.yaml"
-    "second_6lay.yaml"
+    "second_2lay_bb2d.yaml"
+    "second_5layers_bb2d-1875.yaml"
 )
 
 # Loop through each configuration file and execute the command
