@@ -14,6 +14,7 @@ RUN apt-get update && apt-get install -y \
     libsuitesparse-dev python3-pcl pcl-tools libgtk2.0-dev libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev libjpeg-dev \
     libpng-dev libtiff-dev libdc1394-22-dev xfce4-terminal \
     openssh-server \
+    gpustat \
     && rm -rf /var/lib/apt/lists/*
 
 # OpenCV with CUDA support
@@ -66,9 +67,9 @@ ENV TORCH_CUDA_ARCH_LIST="3.5;5.0;6.0;6.1;7.0;7.5;8.0;8.6+PTX"
 RUN pip3 install numpy==1.23.0 llvmlite numba tensorboardX easydict pyyaml scikit-image tqdm SharedArray open3d mayavi av2 kornia pyquaternion
 RUN pip3 install spconv-cu116
 
-RUN git clone https://github.com/open-mmlab/OpenPCDet.git
+RUN git clone https://github.com/Zebsi235/OpenPCDet.git
 
-WORKDIR OpenPCDet
+WORKDIR /app/OpenPCDet
 
 RUN python3 setup.py develop
     
@@ -84,4 +85,8 @@ ENV NVIDIA_VISIBLE_DEVICES="all" \
 # Start instructions: xhost local:root && docker run -it --rm -e SDL_VIDEODRIVER=x11 -e DISPLAY=$DISPLAY --env='DISPLAY' --gpus all --ipc host --privileged --network host -p 8080:8081 -v /tmp/.X11-unix:/tmp/.X11-unix:rw -v file_locations:/storage -v /weights:/weights openpcdet:cuda11 xfce4-terminal --title=openPCDet
 RUN mkdir -p /run/sshd
 RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config
+
+WORKDIR /app/OpenPCDet
+RUN pip install kornia==0.5.8
+
 CMD ["/usr/sbin/sshd", "-D"]

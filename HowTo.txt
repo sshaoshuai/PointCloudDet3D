@@ -22,6 +22,11 @@ docker inspect \
 ssh -X -p 8081 root@172.X.X.X
 
 
+# Copy from remote to local
+rsync -ravh --info=progress2 -e 'ssh -i ~/.ssh/id_ed25519_chronos' smueck@10.60.0.135:/home/smueck/data/out /home/zebsi/Documents/_Master/Masterarbeit/results/V3
+
+
+
 # Tensorboard
 pip install tensorboard && \
 tensorboard --logdir /app/OpenPCDet/output/custom_models --bind_all
