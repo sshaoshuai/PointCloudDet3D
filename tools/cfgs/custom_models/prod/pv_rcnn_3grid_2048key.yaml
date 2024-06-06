@@ -18,7 +18,6 @@ MODEL:
 
     BACKBONE_2D:
         NAME: BaseBEVBackbone
-
         LAYER_NUMS: [5, 5]
         LAYER_STRIDES: [1, 2]
         NUM_FILTERS: [128, 256]

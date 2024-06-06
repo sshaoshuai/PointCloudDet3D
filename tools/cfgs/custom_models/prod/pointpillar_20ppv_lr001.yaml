@@ -1,6 +1,6 @@
 CLASS_NAMES: ['human']
 
-DATA_CONFIG:
+DATA_CONFIG: 
     _BASE_CONFIG_: cfgs/dataset_configs/custom_dataset.yaml
     DATA_PROCESSOR:
         - NAME: mask_points_and_boxes_outside_range
@@ -12,13 +12,12 @@ DATA_CONFIG:
             'test': False
           }
         - NAME: transform_points_to_voxels
-          VOXEL_SIZE: [5, 1.875, 1.5]
-          MAX_POINTS_PER_VOXEL: 32
+          VOXEL_SIZE: [5, 1.875, 60]
+          MAX_POINTS_PER_VOXEL: 20
           MAX_NUMBER_OF_VOXELS: {
             'train': 16000,
             'test': 40000
           }
-          
     DATA_AUGMENTOR:
         DISABLE_AUG_LIST: ['placeholder']
         AUG_CONFIG_LIST:
@@ -44,20 +43,19 @@ DATA_CONFIG:
 
             - NAME: random_world_scaling
               WORLD_SCALE_RANGE: [0.95, 1.05]
-
-
 MODEL:
-    NAME: SECONDNet
+    NAME: PointPillar
 
     VFE:
-        NAME: MeanVFE
-
-    BACKBONE_3D:
-        NAME: VoxelBackBone8x
+        NAME: PillarVFE
+        WITH_DISTANCE: False
+        USE_ABSLOTE_XYZ: True
+        USE_NORM: True
+        NUM_FILTERS: [64]
 
     MAP_TO_BEV:
-        NAME: HeightCompression
-        NUM_BEV_FEATURES: 128
+        NAME: PointPillarScatter
+        NUM_BEV_FEATURES: 64
 
     BACKBONE_2D:
         NAME: BaseBEVBackbone
@@ -79,15 +77,15 @@ MODEL:
         ANCHOR_GENERATOR_CONFIG: [
             {
                 'class_name': 'human',
-                'anchor_sizes': [[20.3,14.2, 16.9]],
+                'anchor_sizes': [[20.33, 14.2, 16.9]],
                 'anchor_rotations': [0, 1.57],
                 'anchor_bottom_heights': [0],
                 'align_center': False,
-                'feature_map_stride': 8,
+                'feature_map_stride': 2,
                 'matched_threshold': 0.5,
                 'unmatched_threshold': 0.35
-            },
-         ]
+            }
+        ]
 
         TARGET_ASSIGNER_CONFIG:
             NAME: AxisAlignedTargetAssigner
@@ -108,14 +106,14 @@ MODEL:
     POST_PROCESSING:
         RECALL_THRESH_LIST: [0.3, 0.5, 0.7]
         SCORE_THRESH: 0.1
-        OUTPUT_RAW_SCORE: False
+        OUTPUT_RAW_SCORE: True
 
         EVAL_METRIC: kitti
 
         NMS_CONFIG:
             MULTI_CLASSES_NMS: False
             NMS_TYPE: nms_gpu
-            NMS_THRESH: 0.3 
+            NMS_THRESH: 0.1
             NMS_PRE_MAXSIZE: 4096
             NMS_POST_MAXSIZE: 500
 
@@ -125,7 +123,7 @@ OPTIMIZATION:
     NUM_EPOCHS: 75
 
     OPTIMIZER: adam_onecycle
-    LR: 0.003
+    LR: 0.01
     WEIGHT_DECAY: 0.01
     MOMENTUM: 0.9
 
