@@ -35,6 +35,7 @@ do
         echo "Starting training with configuration: $CFG and pretrained model $PRETRAINED"
         python3 train.py --cfg_file "${CONFIG_DIR}${CFG}" --pretrained_model "${TARGET_DIRECTORY}/pretrained_pth/$PRETRAINED" &> output.log
     else
+        echo "Starting training with configuration: $CFG"
         python3 train.py --cfg_file "${CONFIG_DIR}${CFG}" &> output.log
     fi
     
@@ -80,7 +81,7 @@ done
 
 mv /app/OpenPCDet/data/custom /app/OpenPCDet/data/custom-seq
 mv /app/OpenPCDet/data/custom-rand /app/OpenPCDet/data/custom
-python3 -m pcdet.datasets.custom.custom_dataset create_custom_infos tools/cfgs/dataset_configs/custom_dataset.yaml
+#python3 -m pcdet.datasets.custom.custom_dataset create_custom_infos tools/cfgs/dataset_configs/custom_dataset.yaml
 echo "Renamed sequential and random data"
 CONFIG_DIR="/app/OpenPCDet/tools/cfgs/custom_models/prod_12/rand"
 cd "$TARGET_DIRECTORY"
