@@ -9,12 +9,14 @@ MAP_CLASS_TO_KITTI: {
 
 DATA_SPLIT: {
     'train': train,
-    'test': val
+    'test': test,
+    'val': val
 }
 
 INFO_PATH: {
     'train': [custom_infos_train.pkl],
-    'test': [custom_infos_val.pkl],
+    'test': [custom_infos_test.pkl],
+    'val': [custom_infos_val.pkl]
 }
 
 POINT_FEATURE_ENCODING: {
