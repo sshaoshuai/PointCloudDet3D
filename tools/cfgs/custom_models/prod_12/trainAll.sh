@@ -3,7 +3,7 @@
 
 # Define the directory where the commands will be executed
 TARGET_DIRECTORY="/app/OpenPCDet/tools"
-CONFIG_DIR="/app/OpenPCDet/tools/cfgs/custom_models/prod_12/seq"
+CONFIG_DIR="/app/OpenPCDet/tools/cfgs/custom_models/prod_12/seq/"
 OUTPUT_DIR="/app/OpenPCDet/output$CONFIG_DIR"
 
 # Change to the target directory
@@ -83,7 +83,7 @@ mv /app/OpenPCDet/data/custom /app/OpenPCDet/data/custom-seq
 mv /app/OpenPCDet/data/custom-rand /app/OpenPCDet/data/custom
 #python3 -m pcdet.datasets.custom.custom_dataset create_custom_infos tools/cfgs/dataset_configs/custom_dataset.yaml
 echo "Renamed sequential and random data"
-CONFIG_DIR="/app/OpenPCDet/tools/cfgs/custom_models/prod_12/rand"
+CONFIG_DIR="/app/OpenPCDet/tools/cfgs/custom_models/prod_12/rand/"
 cd "$TARGET_DIRECTORY"
 
 done
