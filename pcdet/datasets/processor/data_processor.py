@@ -25,6 +25,8 @@ class VoxelGeneratorWrapper():
             except:
                 from spconv.utils import Point2VoxelCPU3d as VoxelGenerator
                 self.spconv_ver = 2
+                
+        print(f"{self.spconv_ver=}")
 
         if self.spconv_ver == 1:
             self._voxel_generator = VoxelGenerator(
@@ -44,20 +46,28 @@ class VoxelGeneratorWrapper():
 
     def generate(self, points):
         if self.spconv_ver == 1:
+            print("CCEA")
             voxel_output = self._voxel_generator.generate(points)
             if isinstance(voxel_output, dict):
                 voxels, coordinates, num_points = \
                     voxel_output['voxels'], voxel_output['coordinates'], voxel_output['num_points_per_voxel']
             else:
                 voxels, coordinates, num_points = voxel_output
+            print("CCEB")
         else:
+            print("CCEC")
             assert tv is not None, f"Unexpected error, library: 'cumm' wasn't imported properly."
-            voxel_output = self._voxel_generator.point_to_voxel(tv.from_numpy(points))
+            print("CCED")
+            intermediate_points = tv.from_numpy(points)
+            print("CCEE")
+            voxel_output = self._voxel_generator.point_to_voxel(intermediate_points)
+            print("CCEF")
             tv_voxels, tv_coordinates, tv_num_points = voxel_output
             # make copy with numpy(), since numpy_view() will disappear as soon as the generator is deleted
             voxels = tv_voxels.numpy()
             coordinates = tv_coordinates.numpy()
             num_points = tv_num_points.numpy()
+            print("CCEG")
         return voxels, coordinates, num_points
 
 
@@ -75,8 +85,10 @@ class DataProcessor(object):
         for cur_cfg in processor_configs:
             cur_processor = getattr(self, cur_cfg.NAME)(config=cur_cfg)
             self.data_processor_queue.append(cur_processor)
+        print(f"Done initializing DataProcessor. Queue: {self.data_processor_queue}")
 
     def mask_points_and_boxes_outside_range(self, data_dict=None, config=None):
+        print("CCA")
         if data_dict is None:
             return partial(self.mask_points_and_boxes_outside_range, config=config)
 
@@ -90,6 +102,7 @@ class DataProcessor(object):
                 use_center_to_filter=config.get('USE_CENTER_TO_FILTER', True)
             )
             data_dict['gt_boxes'] = data_dict['gt_boxes'][mask]
+        print("CCB")
         return data_dict
 
     def shuffle_points(self, data_dict=None, config=None):
@@ -131,6 +144,8 @@ class DataProcessor(object):
         return points_yflip, points_xflip, points_xyflip
 
     def transform_points_to_voxels(self, data_dict=None, config=None):
+        print("CCC")
+        print(f"{config.VOXEL_SIZE=}")
         if data_dict is None:
             grid_size = (self.point_cloud_range[3:6] - self.point_cloud_range[0:3]) / np.array(config.VOXEL_SIZE)
             self.grid_size = np.round(grid_size).astype(np.int64)
@@ -138,7 +153,7 @@ class DataProcessor(object):
             # just bind the config, we will create the VoxelGeneratorWrapper later,
             # to avoid pickling issues in multiprocess spawn
             return partial(self.transform_points_to_voxels, config=config)
-
+        print("CCD")
         if self.voxel_generator is None:
             self.voxel_generator = VoxelGeneratorWrapper(
                 vsize_xyz=config.VOXEL_SIZE,
@@ -147,14 +162,14 @@ class DataProcessor(object):
                 max_num_points_per_voxel=config.MAX_POINTS_PER_VOXEL,
                 max_num_voxels=config.MAX_NUMBER_OF_VOXELS[self.mode],
             )
-
+        print("CCE")
         points = data_dict['points']
         voxel_output = self.voxel_generator.generate(points)
         voxels, coordinates, num_points = voxel_output
-
+        print("CCF")
         if not data_dict['use_lead_xyz']:
             voxels = voxels[..., 3:]  # remove xyz in voxels(N, 3)
-
+        print("CCG")
         if config.get('DOUBLE_FLIP', False):
             voxels_list, voxel_coords_list, voxel_num_points_list = [voxels], [coordinates], [num_points]
             points_yflip, points_xflip, points_xyflip = self.double_flip(points)
@@ -177,6 +192,7 @@ class DataProcessor(object):
             data_dict['voxels'] = voxels
             data_dict['voxel_coords'] = coordinates
             data_dict['voxel_num_points'] = num_points
+        print("CCH")
         return data_dict
 
     def sample_points(self, data_dict=None, config=None):

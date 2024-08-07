@@ -9,10 +9,12 @@ def train_pointpillars():
     print("-> Training PP")
 
     import subprocess
-    os.chdir("/root/tools")
-
-    subprocess.run(["python", "train.py", "--cfg_file", "cfgs/nuscenes_models/cbgs_pp_multihead.yaml"])
-
+    subprocess.run(["pip", "freeze"])
+    # os.chdir("/root/tools")
+    # subprocess.run(["python", "train.py", "--cfg_file", "cfgs/nuscenes_models/cbgs_pp_multihead.yaml"])
+    from tools.check_dataloader import main
+    main()
+    
     print("-> Done training PP")
 
 
