@@ -187,8 +187,13 @@ def init_dist_slurm(tcp_port, local_rank, backend='nccl'):
 
 
 def init_dist_pytorch(tcp_port, local_rank, backend='nccl'):
-    if mp.get_start_method(allow_none=True) is None:
-        mp.set_start_method('spawn')
+    # Un-commenting mp spawn below will lead to high variance in GPU usage across devices
+    # Also, dataloader initialization will lead to huge GPU:0 usage
+    # Because only one of torch.distributed.launch OR torch.multiprocessing
+    # is needed for correctly scheduling multi-gpu training. dist_train.sh already uses the former
+    # if mp.get_start_method(allow_none=True) is None:
+    #     mp.set_start_method('spawn')
+
     # os.environ['MASTER_PORT'] = str(tcp_port)
     # os.environ['MASTER_ADDR'] = 'localhost'
     num_gpus = torch.cuda.device_count()
