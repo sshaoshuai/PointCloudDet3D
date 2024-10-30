@@ -46,9 +46,10 @@ RUN pip3 install opencv-python==4.7.0.68
 RUN pip3 install llvmlite numba tensorboardX easydict pyyaml scikit-image tqdm SharedArray open3d mayavi av2 kornia==0.6.5 pyquaternion
 RUN pip3 install spconv-cu118
 
+# remember you pull the whole repo before that and run docker build ... from OpenPCDet, not Docker folder or tools
 WORKDIR /usr/local/
-COPY . PTv3_Det
-WORKDIR /usr/local/PTv3_Det
+COPY . OpenPCDet
+WORKDIR /usr/local/OpenPCDet
 RUN pip3 install -r requirements.txt
 
 # next, run docker and
